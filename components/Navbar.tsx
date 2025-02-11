@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Down from "@/public/icons/down";
 import { usePeople } from "@/app/context/PeopleContext";
