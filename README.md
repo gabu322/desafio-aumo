@@ -21,7 +21,7 @@ git clone https://github.com/gabu322/desafio-aumo
 
 Depois, instale as dependências:
 
-```bash 
+```bash  
 npm install
 ```
 
