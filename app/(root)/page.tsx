@@ -17,11 +17,15 @@ export default function Home() {
    const { addPerson } = usePeople()!;
    const { people } = usePeople()!;
 
-   useEffect(() => {
+   const fetchRandomUser = () => {
       axios.get("https://randomuser.me/api/").then((res) => {
          setCurrentUser({ seed: res.data.info.seed, ...res.data.results[0] });
          console.log({ seed: res.data.info.seed, ...res.data.results[0] });
       });
+   };
+
+   useEffect(() => {
+      fetchRandomUser();
    }, []);
 
    const handleToggleFollow = () => {
@@ -31,6 +35,8 @@ export default function Home() {
          seed: currentUser?.seed,
          firstName: currentUser?.name.first,
          lastName: currentUser?.name.last,
+         email: currentUser?.email,
+         phone: currentUser?.phone,
          city: currentUser?.location.city,
          country: currentUser?.location.country,
          image: currentUser?.picture.large,
@@ -38,6 +44,24 @@ export default function Home() {
       };
 
       addPerson(newPerson);
+   };
+
+   const handleNextUser = () => {
+      const newPerson = {
+         seed: currentUser?.seed,
+         firstName: currentUser?.name.first,
+         lastName: currentUser?.name.last,
+         email: currentUser?.email,
+         phone: currentUser?.phone,
+         city: currentUser?.location.city,
+         country: currentUser?.location.country,
+         image: currentUser?.picture.large,
+         status: "passed",
+      };
+
+      addPerson(newPerson);
+
+      fetchRandomUser();
    };
 
    return (
@@ -80,9 +104,9 @@ export default function Home() {
 
                <div className="flex flex-row gap-4 w-full mt-auto">
                   <Button
-                     text={following ? "Unfollow" : "Follow"}
+                     text={following ? "Click to unfollow" : "Follow"}
                      className="flex-1"
-                     color={following ? "green" : "blue"}
+                     color={following ? "red" : "blue"}
                      onClick={handleToggleFollow}
                   />
                   <Button
@@ -91,6 +115,7 @@ export default function Home() {
                      hoverColor="hover:bg-slate-200"
                      textColor="black"
                      className="flex-1"
+                     onClick={handleNextUser}
                   />
                </div>
             </div>
@@ -168,47 +193,69 @@ export default function Home() {
          </div>
 
          {/* Suggested users */}
-         {people.length > 0 && <h2 className="text-2xl font-semibold">Suggested 4you</h2>}
+         {people.filter((person) => person.status === "passed").length > 0 && <h2 className="text-2xl font-semibold">Suggested 4you</h2>}
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {people.map((person) => (
-               <UserCard
-                  key={person.seed}
-                  className="card p-4"
-               />
-            ))}
+            {people
+               .filter((person) => person.status === "passed")
+               // .filter((person) => person.seed !== currentUser?.seed)
+               .map((person) => (
+                  <UserCard
+                     key={person.seed}
+                     person={person}
+                     className="card p-4"
+                  />
+               ))}
          </div>
       </div>
    );
 }
 
-export function UserCard({ className }: Readonly<{ className?: string }>) {
+export function UserCard({ className, person }: Readonly<{ className?: string; person: any }>) {
+   const { addPerson } = usePeople()!;
+
+   const handleFollow = () => {
+      const newPerson = {
+         ...person,
+         status: "followed",
+      };
+
+      addPerson(newPerson);
+   };
+
    return (
       <div className={`flex flex-col gap-4 ${className}`}>
          <div className="flex flex-row items-center gap-4">
-            <img
-               src="https://randomuser.me/api/portraits"
-               alt="User profile picture"
-               className="h-16 w-16 rounded-full"
+            <Image
+               src={person.image}
+               alt="User image"
+               width={80}
+               height={80}
+               className="rounded-full"
             />
 
             <div>
-               <h2 className="text-2xl font-semibold">Name</h2>
-               <p className="text-lg">Username</p>
+               <h2 className="text-2xl font-semibold">
+                  {person.firstName} {person.lastName}
+               </h2>
+               <p>
+                  {person.city}, {person.country}
+               </p>
             </div>
          </div>
 
          <div className="flex flex-row justify-between w-full">
             <div className="flex flex-col gap-4">
-               <p>Location</p>
+               <p>Email: {person.email}</p>
 
-               <p>Age</p>
+               <p>Phone: {person.phone}</p>
             </div>
 
             <Button
                className="mt-auto"
                text="Follow"
                color="blue"
+               onClick={handleFollow}
             />
          </div>
       </div>

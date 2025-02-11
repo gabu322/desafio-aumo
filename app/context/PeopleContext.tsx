@@ -6,6 +6,8 @@ type Person = {
    seed: string;
    firstName: string;
    lastName: string;
+   email: string;
+   phone: string;
    city: string;
    country: string;
    image: string;
