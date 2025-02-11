@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
+import { PeopleProvider } from "./context/PeopleContext";
 
 const quicksand = Quicksand({
    subsets: ["latin"],
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
    return (
       <html lang="en">
-         <body className={`${quicksand.className} antialiased bg-slate-100`}>{children}</body>
+         <body className={`${quicksand.className} antialiased bg-slate-100`}>
+            <PeopleProvider>{children}</PeopleProvider>
+         </body>
       </html>
    );
 }

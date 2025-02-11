@@ -1,16 +1,21 @@
 "use client";
 
-import Button from "@/components/Button";
-import Down from "@/public/icons/down";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+
+import Button from "@/components/Button";
+import Down from "@/public/icons/down";
+import { usePeople } from "../context/PeopleContext";
 
 export default function Home() {
    const [currentUser, setCurrentUser] = useState<any>();
    const [suggestedUsers, setSuggestedUsers] = useState<number[]>([1]);
    const [personalInfoOpen, setPersonalInfoOpen] = useState<boolean>(false);
    const [contactInfoOpen, setContactInfoOpen] = useState<boolean>(false);
+   const [following, setFollowing] = useState<boolean>(false);
+
+   const { addPerson } = usePeople()!;
 
    useEffect(() => {
       axios.get("https://randomuser.me/api/").then((res) => {
@@ -18,6 +23,21 @@ export default function Home() {
          console.log({ seed: res.data.info.seed, ...res.data.results[0] });
       });
    }, []);
+
+   const handleToggleFollow = () => {
+      setFollowing(!following);
+
+      const newPerson = {
+         seed: currentUser?.seed,
+         firstName: currentUser?.name.first,
+         lastName: currentUser?.name.last,
+         city: currentUser?.location.city,
+         country: currentUser?.location.country,
+         status: following ? "passed" : "followed",
+      };
+
+      addPerson(newPerson);
+   };
 
    return (
       <div className="flex flex-col gap-4">
@@ -59,8 +79,10 @@ export default function Home() {
 
                <div className="flex flex-row gap-4 w-full mt-auto">
                   <Button
-                     text="Follow"
+                     text={following ? "Unfollow" : "Follow"}
                      className="flex-1"
+                     color={following ? "green" : "blue"}
+                     onClick={handleToggleFollow}
                   />
                   <Button
                      text="Try next user"
