@@ -48,19 +48,23 @@ export default function Home() {
    };
 
    const handleNextUser = () => {
-      const newPerson = {
-         seed: currentUser?.seed,
-         firstName: currentUser?.name.first,
-         lastName: currentUser?.name.last,
-         email: currentUser?.email,
-         phone: currentUser?.phone,
-         city: currentUser?.location.city,
-         country: currentUser?.location.country,
-         image: currentUser?.picture.large,
-         status: "passed",
-      };
+      if (!following) {
+         const newPerson = {
+            seed: currentUser?.seed,
+            firstName: currentUser?.name.first,
+            lastName: currentUser?.name.last,
+            email: currentUser?.email,
+            phone: currentUser?.phone,
+            city: currentUser?.location.city,
+            country: currentUser?.location.country,
+            image: currentUser?.picture.large,
+            status: "passed",
+         };
 
-      addPerson(newPerson);
+         addPerson(newPerson);
+      }
+
+      setFollowing(false);
 
       fetchRandomUser();
    };
