@@ -7,7 +7,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <main>
          <div className="top-0 h-[72px]" />
 
-         <main className="md:w-3/4 mx-4 md:mx-auto md:mt-6">
+         <main className="md:w-3/4 mx-4 md:mx-auto md:mt-6 mb-4">
             <Navbar />
 
             {children}

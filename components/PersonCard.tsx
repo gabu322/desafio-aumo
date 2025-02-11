@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Button from "./Button";
-import { usePeople } from "@/app/context/PeopleContext";
+import { usePeople } from "@/context/PeopleContext";
 
 export function PersonCard({ className, person }: Readonly<{ className?: string; person: any }>) {
    const { addPerson } = usePeople()!;

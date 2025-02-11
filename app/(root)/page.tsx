@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import Button from "@/components/Button";
 import Down from "@/public/icons/down";
-import { usePeople } from "../context/PeopleContext";
+import { usePeople } from "../../context/PeopleContext";
 import { PersonCard } from "@/components/PersonCard";
 
 export default function Home() {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Down from "@/public/icons/down";
-import { usePeople } from "@/app/context/PeopleContext";
+import { usePeople } from "@/context/PeopleContext";
 import Image from "next/image";
 import Button from "./Button";
 
@@ -23,7 +23,7 @@ export default function Navbar() {
 
    return (
       <nav className="bg-[#9022f3] text-white py-4 px-6 md:px-20 fixed top-0 left-0 w-full z-10 flex flex-row justify-between items-center">
-         <h2 className="text-2xl">users_like.me</h2>
+         <h2 className="text-2xl -z-20">users_like.me</h2>
 
          {/* Followed users */}
          {people.filter((person) => person.status === "followed").length > 0 && (
