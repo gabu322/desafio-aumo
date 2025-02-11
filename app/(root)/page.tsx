@@ -198,7 +198,7 @@ export default function Home() {
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {people
                .filter((person) => person.status === "passed")
-               // .filter((person) => person.seed !== currentUser?.seed)
+               .filter((person) => person.seed !== currentUser?.seed)
                .map((person) => (
                   <UserCard
                      key={person.seed}
