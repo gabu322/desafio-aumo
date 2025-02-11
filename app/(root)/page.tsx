@@ -10,12 +10,12 @@ import { usePeople } from "../context/PeopleContext";
 
 export default function Home() {
    const [currentUser, setCurrentUser] = useState<any>();
-   const [suggestedUsers, setSuggestedUsers] = useState<number[]>([1]);
    const [personalInfoOpen, setPersonalInfoOpen] = useState<boolean>(false);
    const [contactInfoOpen, setContactInfoOpen] = useState<boolean>(false);
    const [following, setFollowing] = useState<boolean>(false);
 
    const { addPerson } = usePeople()!;
+   const { people } = usePeople()!;
 
    useEffect(() => {
       axios.get("https://randomuser.me/api/").then((res) => {
@@ -33,6 +33,7 @@ export default function Home() {
          lastName: currentUser?.name.last,
          city: currentUser?.location.city,
          country: currentUser?.location.country,
+         image: currentUser?.picture.large,
          status: following ? "passed" : "followed",
       };
 
@@ -167,12 +168,12 @@ export default function Home() {
          </div>
 
          {/* Suggested users */}
-         {suggestedUsers.length > 0 && <h2 className="text-2xl font-semibold">Suggested 4you</h2>}
+         {people.length > 0 && <h2 className="text-2xl font-semibold">Suggested 4you</h2>}
 
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {suggestedUsers.map((user) => (
+            {people.map((person) => (
                <UserCard
-                  key={user}
+                  key={person.seed}
                   className="card p-4"
                />
             ))}

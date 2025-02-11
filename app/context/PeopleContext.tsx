@@ -8,6 +8,7 @@ type Person = {
    lastName: string;
    city: string;
    country: string;
+   image: string;
    status: string;
 };
 
