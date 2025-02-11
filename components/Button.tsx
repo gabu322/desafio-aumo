@@ -10,9 +10,11 @@ type ButtonProps = {
    hoverColor?: string;
    text?: string;
    textColor?: string;
+   textSize?: string;
    href?: string;
    blank?: string;
    children?: ReactNode;
+   noShadow?: boolean;
    rounded?: boolean;
    disabled?: boolean;
 };
@@ -26,7 +28,7 @@ const bgColors = {
    black: { bg: "bg-black", hover: "hover:bg-gray-800" },
 };
 
-export default function Button({ className = "", type = "button", onClick, color = "blue", bgColor, hoverColor, text, textColor = "text-white", href, blank = "", children, rounded = false, disabled = false }: ButtonProps) {
+export default function Button({ className = "", type = "button", onClick, color = "blue", bgColor, hoverColor, text, textColor = "text-white", textSize = "text-sm", href, blank = "", children, noShadow = false, rounded = false, disabled = false }: ButtonProps) {
    const colors = bgColors[color];
    const bg_color = bgColor || colors.bg;
    const hover_color = hoverColor || colors.hover;
@@ -34,7 +36,7 @@ export default function Button({ className = "", type = "button", onClick, color
    return (
       <button
          type={type}
-         className={`flex items-center justify-center relative h-10 px-3 shadow-sm hover:shadow transition-all duration-200 cursor-pointer font-semibold text-sm ${textColor} ${className} ${bg_color} ${hover_color} ${rounded ? "rounded-full" : "rounded"}`}
+         className={`flex items-center justify-center relative h-10 px-3 ${!noShadow ? "shadow-sm hover:shadow" : ""} transition-all duration-200 cursor-pointer font-semibold ${textSize} ${textColor} ${className} ${bg_color} ${hover_color} ${rounded ? "rounded-full" : "rounded"}`}
          onClick={onClick}
          disabled={disabled}
       >
