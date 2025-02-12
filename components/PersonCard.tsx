@@ -27,25 +27,24 @@ export function PersonCard({ className, person }: Readonly<{ className?: string;
                className="rounded-full"
             />
 
-            <div>
-               <h2 className="text-2xl font-semibold">
+            <div className="min-w-0">
+               <h2 className="text-2xl font-semibold truncate">
                   {person.firstName} {person.lastName}
                </h2>
-               <p>
+               <p className="truncate">
                   {person.city}, {person.country}
                </p>
             </div>
          </div>
 
-         <div className="flex flex-row justify-between w-full">
-            <div className="flex flex-col gap-4">
-               <p>Email: {person.email}</p>
-
-               <p>Phone: {person.phone}</p>
+         <div className="flex flex-row justify-between w-full items-start">
+            <div className="flex flex-col gap-4 min-w-0">
+               <p className="truncate">Email: {person.email}</p>
+               <p className="truncate">Phone: {person.phone}</p>
             </div>
 
             <Button
-               className="mt-auto"
+               className="mt-auto flex-shrink-0"
                text="Follow"
                color="blue"
                onClick={handleFollow}

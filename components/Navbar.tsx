@@ -55,11 +55,11 @@ export default function Navbar() {
                            />
 
                            <div className="flex flex-row justify-between w-full">
-                              <div className="flex flex-col gap-1">
-                                 <h3 className="text-lg font-semibold">
+                              <div className="flex flex-col gap-1 w-[180px]">
+                                 <h3 className="text-lg font-semibold truncate">
                                     {person.firstName} {person.lastName}
                                  </h3>
-                                 <p>
+                                 <p className="truncate">
                                     {person.city}, {person.country}
                                  </p>
                               </div>
