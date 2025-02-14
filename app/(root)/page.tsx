@@ -61,6 +61,7 @@ export default function Home() {
    return (
       <div className="flex flex-col gap-4">
          <h1 className="text-3xl md:text-4xl font-semibold">Find new users like you</h1>
+
          {/* Current user info */}
          <div className="card relative overflow-hidden h-96">
             <div className="relative w-full h-1/2">
@@ -185,10 +186,11 @@ export default function Home() {
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {people
                .filter((person) => person.status === "passed")
-               .map((person) => (
+               .map((person, index) => (
                   <PersonCard
                      key={person.id}
                      person={person}
+                     index={people.findIndex((p) => p.id === person.id)}
                      className="card p-4"
                   />
                ))}
