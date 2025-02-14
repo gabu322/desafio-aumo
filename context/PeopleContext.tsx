@@ -6,16 +6,16 @@ import { Person } from "@/context/Person";
 
 type PeopleContextType = {
    people: Person[];
-   currentId: Person | null;
    addPerson: (person: Person) => void;
    fetchRandomUser: () => void;
-   setCurrentId: (user: Person | null) => void;
+   currentIndex: number;
+   setCurrentIndex: (index: number) => void;
 };
 const PeopleContext = createContext<PeopleContextType | undefined>(undefined);
 
 export function PeopleProvider({ children }: { children: React.ReactNode }) {
    const [people, setPeople] = useState<Person[]>([]);
-   const [currentId, setCurrentId] = useState<Person | null>(null);
+   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
    useEffect(() => {
       const storedPeople = localStorage.getItem("people");
@@ -30,7 +30,7 @@ export function PeopleProvider({ children }: { children: React.ReactNode }) {
       const existingIndex = people.findIndex((p) => p.id === person.id);
 
       // Check if the person already exists
-      if (existingIndex !== -1) {
+      if (existingIndex != -1) {
          const updatedPeople = [...people];
          updatedPeople[existingIndex] = person;
          setPeople(updatedPeople);
@@ -63,10 +63,10 @@ export function PeopleProvider({ children }: { children: React.ReactNode }) {
       };
 
       addPerson(user);
-      setCurrentId(user.id);
+      setCurrentIndex(people.length);
    };
 
-   return <PeopleContext.Provider value={{ people, currentId, addPerson, fetchRandomUser, setCurrentId }}>{children}</PeopleContext.Provider>;
+   return <PeopleContext.Provider value={{ people, currentIndex, addPerson, fetchRandomUser, setCurrentIndex }}>{children}</PeopleContext.Provider>;
 }
 
 export function usePeople() {

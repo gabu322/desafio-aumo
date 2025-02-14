@@ -43,11 +43,11 @@ export default function Navbar() {
                      .filter((person) => person.status === "followed")
                      .map((person) => (
                         <div
-                           key={person.seed}
+                           key={person.id}
                            className="flex flex-row items-center gap-4"
                         >
                            <Image
-                              src={person.image}
+                              src={person.image || "https://randomuser.me/api/portraits/men/1.jpg"}
                               alt="User image"
                               width={60}
                               height={60}

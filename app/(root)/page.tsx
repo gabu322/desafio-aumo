@@ -3,46 +3,55 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import { Person } from "@/context/Person";
-
 import Button from "@/components/Button";
 import Down from "@/public/icons/down";
 import { usePeople } from "../../context/PeopleContext";
 import { PersonCard } from "@/components/PersonCard";
 
 export default function Home() {
-   const [currentPerson, setCurrentPerson] = useState<Person>();
    const [personalInfoOpen, setPersonalInfoOpen] = useState<boolean>(false);
    const [contactInfoOpen, setContactInfoOpen] = useState<boolean>(false);
-   const { addPerson, fetchRandomUser, currentId, people, setCurrentId } = usePeople()!;
+   const { addPerson, fetchRandomUser, currentIndex, people, setCurrentIndex } = usePeople()!;
 
    useEffect(() => {
-      fetchRandomUser();
+      addPerson({
+         id: "me",
+         firstName: "Gabriel",
+         lastName: "Biancardi",
+         email: "gabrieldallorto@hotmail.com",
+         phone: "(27) 995313131",
+         city: "Vitória",
+         country: "Brazil",
+         image: "https://randomuser.me/api/portraits/men/1.jpg",
+         title: "Mr",
+         cell: "(27) 995313131",
+         nationality: "BR",
+         age: 21,
+         gender: "male",
+         status: "pending",
+      });
+      setCurrentIndex(0);
    }, []);
 
-   useEffect(() => {
-      setCurrentPerson(people.find((person) => person.id === currentId));
-   }, [currentId]);
-
    const handleToggleFollow = () => {
-      setCurrentPerson({
-         ...currentPerson,
-         status: currentPerson?.status === "followed" ? "pending" : "followed",
-      });
+      console.log(people[currentIndex]?.status);
+      const newPerson = {
+         ...people[currentIndex],
+         status: people[currentIndex]?.status === "followed" ? "pending" : "followed",
+      };
+
+      addPerson(newPerson);
    };
 
    const handleNextUser = () => {
-      if (currentPerson?.status === "pending") {
-         setCurrentPerson({
-            ...currentPerson,
+      if (people[currentIndex]?.status === "pending") {
+         const newPerson = {
+            ...people[currentIndex],
             status: "passed",
-         });
-      }
+         };
 
-      if (currentPerson) {
-         addPerson(currentPerson);
+         addPerson(newPerson);
       }
-
       fetchRandomUser();
    };
 
@@ -52,41 +61,37 @@ export default function Home() {
          {/* Current user info */}
          <div className="card relative overflow-hidden h-96">
             <div className="relative w-full h-1/2">
-               {currentPerson && (
-                  <Image
-                     src={currentPerson?.image || "https://randomuser.me/api/portraits/men/1.jpg"}
-                     alt="Background image"
-                     fill
-                     style={{ objectFit: "cover" }}
-                     className="filter blur-sm"
-                  />
-               )}
+               <Image
+                  src={people[currentIndex]?.image || "https://randomuser.me/api/portraits/men/1.jpg"}
+                  alt="Background image"
+                  fill
+                  style={{ objectFit: "cover" }}
+                  className="filter blur-sm"
+               />
             </div>
 
-            {currentPerson && (
-               <Image
-                  src={currentPerson?.image || "https://randomuser.me/api/portraits/men/1.jpg"}
-                  alt="Front image"
-                  width={200}
-                  height={200}
-                  className="absolute rounded-full border-4 border-white object-cover left-1/2 top-10 -translate-x-1/2 shadow-md"
-               />
-            )}
+            <Image
+               src={people[currentIndex]?.image || "https://randomuser.me/api/portraits/men/1.jpg"}
+               alt="Front image"
+               width={200}
+               height={200}
+               className="absolute rounded-full border-4 border-white object-cover left-1/2 top-10 -translate-x-1/2 shadow-md"
+            />
 
             <div className="px-4 pt-12 pb-4 flex flex-col w-full items-center h-1/2">
                <h3 className="font-bold text-2xl">
-                  {currentPerson?.firstName} {currentPerson?.lastName}
+                  {people[currentIndex]?.firstName} {people[currentIndex]?.lastName}
                </h3>
 
                <h4 className=" text-xl">
-                  {currentPerson?.city}, {currentPerson?.country}
+                  {people[currentIndex]?.city}, {people[currentIndex]?.country}
                </h4>
 
                <div className="flex flex-row gap-4 w-full mt-auto">
                   <Button
-                     text={currentPerson?.status === "followed" ? "Click to unfollow" : "Follow"}
+                     text={people[currentIndex]?.status === "followed" ? "Click to unfollow" : "Follow"}
                      className="flex-1"
-                     color={currentPerson?.status === "followed" ? "red" : "blue"}
+                     color={people[currentIndex]?.status === "followed" ? "red" : "blue"}
                      onClick={handleToggleFollow}
                   />
                   <Button
@@ -108,13 +113,13 @@ export default function Home() {
                <h3 className="font-bold text-2xl">Personal Info</h3>
 
                <div className="flex flex-col gap-2 pl-2">
-                  <h4 className="text-lg">Born at: {currentPerson?.nationality}</h4>
+                  <h4 className="text-lg">Born at: {people[currentIndex]?.nationality}</h4>
 
-                  <h4 className="text-lg">Age: {currentPerson?.age}</h4>
+                  <h4 className="text-lg">Age: {people[currentIndex]?.age}</h4>
 
                   <div className={`flex flex-col gap-2 transition-all duration-500 overflow-hidden ${personalInfoOpen ? "max-h-96 " : "max-h-0 opacity-"}`}>
-                     <h4 className="text-lg">Gender: {currentPerson?.gender}</h4>
-                     <h4 className="text-lg">Title: {currentPerson?.title}</h4>
+                     <h4 className="text-lg">Gender: {people[currentIndex]?.gender}</h4>
+                     <h4 className="text-lg">Title: {people[currentIndex]?.title}</h4>
                   </div>
                </div>
 
@@ -142,12 +147,12 @@ export default function Home() {
                <h3 className="font-bold text-2xl">Contact Info</h3>
 
                <div className="flex flex-col gap-2 pl-2">
-                  <h4 className="text-lg">Email: {currentPerson?.email}</h4>
+                  <h4 className="text-lg">Email: {people[currentIndex]?.email}</h4>
 
-                  <h4 className="text-lg">Phone: {currentPerson?.phone}</h4>
+                  <h4 className="text-lg">Phone: {people[currentIndex]?.phone}</h4>
 
                   <div className={`flex flex-col gap-2 transition-all duration-500 overflow-hidden ${contactInfoOpen ? "max-h-96 " : "max-h-0 opacity-"}`}>
-                     <h4 className="text-lg">Cell: {currentPerson?.cell}</h4>
+                     <h4 className="text-lg">Cell: {people[currentIndex]?.cell}</h4>
                   </div>
                </div>
 
