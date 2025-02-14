@@ -53,9 +53,7 @@ export default function Home() {
          addPerson(newPerson);
       }
 
-      if (people[currentIndex]?.status !== "pending") {
-         fetchRandomUser();
-      }
+      fetchRandomUser();
    };
 
    return (
