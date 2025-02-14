@@ -109,7 +109,6 @@ export default function Home() {
                </div>
             </div>
          </div>
-
          {/* Personal and contact info, needed for responsivity */}
          <div className="flex flex-col md:flex-row md:items-start gap-4">
             {/* Pesonal info */}
@@ -182,11 +181,10 @@ export default function Home() {
 
          {/* Suggested users */}
          {people.filter((person) => person.status === "passed").length > 0 && <h2 className="text-2xl font-semibold">Suggested 4you</h2>}
-
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {people
                .filter((person) => person.status === "passed")
-               .map((person, index) => (
+               .map((person) => (
                   <PersonCard
                      key={person.id}
                      person={person}
